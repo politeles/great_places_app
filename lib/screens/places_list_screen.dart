@@ -20,26 +20,36 @@ class PlacesListScreen extends StatelessWidget {
             )
           ],
         ),
-        body: Consumer<GreatPlaces>(
-          child: const Center(
-            child: Text(
-              'Got no places yet!!',
-            ),
-          ),
-          builder: (context, greatPlaces, child) => greatPlaces.items.isEmpty
-              ? child!
-              : ListView.builder(
-                  itemBuilder: (context, index) => ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage:
-                          FileImage(greatPlaces.items[index].image),
+        body: FutureBuilder(
+          future: Provider.of<GreatPlaces>(context, listen: false)
+              .fetchAndSetPlaces(),
+          builder: (context, snapshot) => snapshot.connectionState ==
+                  ConnectionState.waiting
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Consumer<GreatPlaces>(
+                  child: const Center(
+                    child: Text(
+                      'Got no places yet!!',
                     ),
-                    title: Text(greatPlaces.items[index].title),
-                    onTap: () {
-                      // go to the detail page
-                    },
                   ),
-                  itemCount: greatPlaces.items.length,
+                  builder: (context, greatPlaces, child) =>
+                      greatPlaces.items.isEmpty
+                          ? child!
+                          : ListView.builder(
+                              itemBuilder: (context, index) => ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage:
+                                      FileImage(greatPlaces.items[index].image),
+                                ),
+                                title: Text(greatPlaces.items[index].title),
+                                onTap: () {
+                                  // go to the detail page
+                                },
+                              ),
+                              itemCount: greatPlaces.items.length,
+                            ),
                 ),
         )
         //    Center(
