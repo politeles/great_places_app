@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart' as path;
+import './api_key.dart';
 
 class DBHelper {
   static Future<Database> database() async {
@@ -8,7 +9,7 @@ class DBHelper {
     return sql.openDatabase(path.join(dbPath, 'places.db'),
         onCreate: (db, version) {
       return db.execute(
-          'CREATE TABLE user_places(id TEXT PRIMARY KEY,title TEXT,image TEXT)');
+          'CREATE TABLE user_places(id TEXT PRIMARY KEY,title TEXT,image TEXT, loc_lat REAL, loc_lng REAL, address TEXT)');
     }, version: 1);
   }
 

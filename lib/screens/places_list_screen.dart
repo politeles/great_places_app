@@ -10,7 +10,7 @@ class PlacesListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Your places'),
+          title: const Text('Your places'),
           actions: [
             IconButton(
               onPressed: () {
@@ -25,7 +25,7 @@ class PlacesListScreen extends StatelessWidget {
               .fetchAndSetPlaces(),
           builder: (context, snapshot) => snapshot.connectionState ==
                   ConnectionState.waiting
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : Consumer<GreatPlaces>(
@@ -34,22 +34,24 @@ class PlacesListScreen extends StatelessWidget {
                       'Got no places yet!!',
                     ),
                   ),
-                  builder: (context, greatPlaces, child) =>
-                      greatPlaces.items.isEmpty
-                          ? child!
-                          : ListView.builder(
-                              itemBuilder: (context, index) => ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage:
-                                      FileImage(greatPlaces.items[index].image),
-                                ),
-                                title: Text(greatPlaces.items[index].title),
-                                onTap: () {
-                                  // go to the detail page
-                                },
-                              ),
-                              itemCount: greatPlaces.items.length,
+                  builder: (context, greatPlaces, child) => greatPlaces
+                          .items.isEmpty
+                      ? child!
+                      : ListView.builder(
+                          itemBuilder: (context, index) => ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage:
+                                  FileImage(greatPlaces.items[index].image),
                             ),
+                            title: Text(greatPlaces.items[index].title),
+                            subtitle: Text(
+                                greatPlaces.items[index].location!.address!),
+                            onTap: () {
+                              // go to the detail page
+                            },
+                          ),
+                          itemCount: greatPlaces.items.length,
+                        ),
                 ),
         )
         //    Center(
